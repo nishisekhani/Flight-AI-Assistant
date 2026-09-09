@@ -1,3 +1,5 @@
+import os
+
 import gradio as gr
 from chatMethod import *
 
@@ -31,7 +33,10 @@ with gr.Blocks() as ui:
 
 # Launch the local server
 if __name__ == "__main__":
-    ui.launch()
+    ui.launch(
+        server_name="0.0.0.0",
+        server_port=int(os.getenv("PORT", "7860")),
+    )
 
 
     
