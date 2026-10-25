@@ -12,24 +12,28 @@ for city, price in ticket_prices.items():
 
 
 def put_message_in_chatbot(message, history):
-    print(message)
-    return "", history + [{"role":"user", "content":message}]
+    return "", message, history + [{"role":"user", "content":message}]
 
 # UI definition
 
 with gr.Blocks() as ui:
+    reply = gr.State()
+    cities = gr.State(value=[])    
+    usermessage = gr.State()
     with gr.Row():
         chatbot = gr.Chatbot(height=300)
         image_output = gr.Image(height=300, interactive=False)
     with gr.Row():
         audio_output = gr.Audio(interactive=False, autoplay=True)
     with gr.Row():
-        message = gr.Textbox(label="Chat with our AI Assistant:", submit_btn = True)
-        button =  gr.Button()
+        message = gr.Textbox(label="Chat with our AI Assistant:(Currently has prices for - London, Paris, Tokyo, Sydney)", submit_btn = False)
+    with gr.Row():
+        button =  gr.Button(value="Send")
 
 # Hooking up events to callbacks
-    button.click(put_message_in_chatbot, inputs=[message, chatbot], outputs=[message, chatbot]).then(message_gpt, inputs=chatbot, outputs=[chatbot, audio_output, image_output]
-    )
+    button.click(put_message_in_chatbot, inputs=[message, chatbot], outputs=[message, usermessage, chatbot]).then(message_gpt, inputs=[chatbot, usermessage], outputs=[chatbot, reply, cities]).then(
+        talker, inputs=reply, outputs=audio_output).then(
+        lambda cities: artist(cities) if cities else None, inputs=cities, outputs=image_output)
 
 # Launch the local server
 if __name__ == "__main__":

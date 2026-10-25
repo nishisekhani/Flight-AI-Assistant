@@ -19,7 +19,6 @@ get_price_function = {
 
 
 def get_ticket_price(city):
-    print(f"DATABASE TOOL CALLED: Getting price for {city}", flush=True)
     with sqlite3.connect(pricesDB) as conn:
         cursor = conn.cursor()
         cursor.execute('SELECT price FROM prices WHERE city = ?', (city.lower(),))

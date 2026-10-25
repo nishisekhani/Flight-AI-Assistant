@@ -16,3 +16,7 @@ gemini = OpenAI(api_key=gemini_api_key, base_url=gemini_url)
 # MODEL = 'claude-sonnet-4-5-20250929'
 # anthropic = OpenAI(api_key=anthropic_api_key, base_url=anthropic_url)
 
+open_router_api_key = os.getenv('OPEN_ROUTER_API_KEY')
+open_router_url = "https://openrouter.ai/api/v1"
+OPENROUTER_MODEL = "nvidia/nemotron-3.5-lightning:free"
+openrouter = OpenAI(api_key=open_router_api_key, base_url=open_router_url)
