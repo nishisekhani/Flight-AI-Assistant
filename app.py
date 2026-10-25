@@ -22,7 +22,7 @@ with gr.Blocks() as ui:
     usermessage = gr.State()
     with gr.Row():
         chatbot = gr.Chatbot(height=300)
-        image_output = gr.Image(height=300, interactive=False)
+        image_output = gr.Image(height=300, interactive=False, value="multimedia/base_image.png")
     with gr.Row():
         audio_output = gr.Audio(interactive=False, autoplay=True)
     with gr.Row():
@@ -33,7 +33,7 @@ with gr.Blocks() as ui:
 # Hooking up events to callbacks
     button.click(put_message_in_chatbot, inputs=[message, chatbot], outputs=[message, usermessage, chatbot]).then(message_gpt, inputs=[chatbot, usermessage], outputs=[chatbot, reply, cities]).then(
         talker, inputs=reply, outputs=audio_output).then(
-        lambda cities: artist(cities) if cities else None, inputs=cities, outputs=image_output)
+        lambda cities: artist(cities) if cities else "multimedia/base_image.png", inputs=cities, outputs=image_output)
 
 # Launch the local server
 if __name__ == "__main__":
